@@ -1,13 +1,13 @@
 <?php
 
-namespace Lewisqic\LaravelSpyhole\Http\Controllers;
+namespace Ratespecial\LaravelSpyhole\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Lewisqic\LaravelSpyhole\Http\Requests\StoreEntryRequest;
-use Lewisqic\LaravelSpyhole\Models\SessionRecording;
+use Ratespecial\LaravelSpyhole\Http\Requests\StoreEntryRequest;
+use Ratespecial\LaravelSpyhole\Models\SessionRecording;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 class EntryController extends Controller

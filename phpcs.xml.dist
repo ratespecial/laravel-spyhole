@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="SpyholeRules" namespace="Lewisqic\\LaravelSpyhole">
+<ruleset name="SpyholeRules" namespace="Ratespecial\\LaravelSpyhole">
     <rule ref="PSR12">
         <exclude name="PSR12.Files.FileHeader" />
         <exclude name="PSR12.Files.OpenTag" />

@@ -16,7 +16,7 @@ Laravel Spyhole is a user session recorder for the Laravel Framework. Laravel Sp
 You can install the package via composer:
 
 ```bash
-composer require lewisqic/laravel-spyhole
+composer require ratespecial/laravel-spyhole
 ```
 
 ## Usage
@@ -24,7 +24,7 @@ composer require lewisqic/laravel-spyhole
 After installation publish the config file:
 
 ``` php
-php artisan vendor:publish --provider="Lewisqic\LaravelSpyhole\LaravelSpyholeServiceProvider"
+php artisan vendor:publish --provider="Ratespecial\LaravelSpyhole\LaravelSpyholeServiceProvider"
 ```
 
 In the configuration file you can set:
@@ -45,7 +45,7 @@ As pointed before, spyhole uses RRWeb as its internal recorder.
 
 In the `resources/assets` folder there are the published assets where you can find the RRWeb files and the built version of `recording-handler.js`, a JS script handling the RRWeb initialization and recording sendings.  
 
-The recordings are posted to a route named `spyhole.store-entry` (whose URL is `/spyhole-api/record`). Recordings are accessible via the model `Lewisqic\LaravelSpyhole\Models\SessionRecording` with properties: ID, path, recordings (an array stored gzipped and base 64 encoded) and user ID.
+The recordings are posted to a route named `spyhole.store-entry` (whose URL is `/spyhole-api/record`). Recordings are accessible via the model `Ratespecial\LaravelSpyhole\Models\SessionRecording` with properties: ID, path, recordings (an array stored gzipped and base 64 encoded) and user ID.
 
 ### Testing
 

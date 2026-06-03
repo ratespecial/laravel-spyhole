@@ -1,6 +1,6 @@
 <?php
 
-namespace Lewisqic\LaravelSpyhole;
+namespace Ratespecial\LaravelSpyhole;
 
 class LaravelSpyhole
 {

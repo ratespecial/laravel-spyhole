@@ -1,6 +1,6 @@
 <?php
 
-namespace Lewisqic\LaravelSpyhole\Models;
+namespace Ratespecial\LaravelSpyhole\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string type
  * @property string session_id
  * @property array recordings
- * @package Lewisqic\LaravelSpyhole\Models
+ * @package Ratespecial\LaravelSpyhole\Models
  */
 class SessionRecording extends Model
 {

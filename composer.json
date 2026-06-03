@@ -1,10 +1,10 @@
 {
-    "name": "lewisqic/laravel-spyhole",
+    "name": "ratespecial/laravel-spyhole",
     "description": "Laravel package to record and re-watch user sessions",
     "keywords": [
         "laravel-spyhole"
     ],
-    "homepage": "https://github.com/lewisqic/laravel-spyhole",
+    "homepage": "https://github.com/ratespecial/laravel-spyhole",
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -28,12 +28,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Lewisqic\\LaravelSpyhole\\": "src"
+            "Ratespecial\\LaravelSpyhole\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Lewisqic\\LaravelSpyhole\\Tests\\": "tests"
+            "Ratespecial\\LaravelSpyhole\\Tests\\": "tests"
         }
     },
     "config": {
@@ -42,10 +42,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Lewisqic\\LaravelSpyhole\\LaravelSpyholeServiceProvider"
+                "Ratespecial\\LaravelSpyhole\\LaravelSpyholeServiceProvider"
             ],
             "aliases": {
-                "LaravelSpyhole": "Lewisqic\\LaravelSpyhole\\LaravelSpyholeFacade"
+                "LaravelSpyhole": "Ratespecial\\LaravelSpyhole\\LaravelSpyholeFacade"
             }
         }
     },

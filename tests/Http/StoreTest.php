@@ -1,13 +1,13 @@
 <?php
 
-namespace Lewisqic\LaravelSpyhole\Tests\Http;
+namespace Ratespecial\LaravelSpyhole\Tests\Http;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Lewisqic\LaravelSpyhole\Models\SessionRecording;
-use Lewisqic\LaravelSpyhole\Tests\TestCase;
+use Ratespecial\LaravelSpyhole\Models\SessionRecording;
+use Ratespecial\LaravelSpyhole\Tests\TestCase;
 
 class StoreTest extends TestCase
 {
