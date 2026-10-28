@@ -23,7 +23,7 @@ class StoreTest extends TestCase
      * This test check if can correctly store a request with recording.
      */
     #[Test]
-    public function can_store_first_recording_request()
+    public function canStoreFirstRecordingRequest()
     {
         $this->assertFalse(config('laravel-spyhole.track_request_session_id'));
 
@@ -32,12 +32,12 @@ class StoreTest extends TestCase
                 // some example data
                 [
                     'timestamp' => now()->unix(),
-                    'data' => [
-                        'x' => 0,
-                        'y' => 0,
-                        'type' => 0
-                    ]
-                ]
+                    'data'      => [
+                        'x'    => 0,
+                        'y'    => 0,
+                        'type' => 0,
+                    ],
+                ],
             ],
             'path' => '/',
         ];
@@ -60,8 +60,8 @@ class StoreTest extends TestCase
         $this->assertDatabaseHas(
             'session_recordings',
             [
-                'id' => (int)$recordingId,
-                'path' => '/',
+                'id'         => (int) $recordingId,
+                'path'       => '/',
                 'recordings' => json_encode($requestData['frames']),
             ]
         );
@@ -74,7 +74,7 @@ class StoreTest extends TestCase
      * This test check if the fake session id is kept between calls.
      */
     #[Test]
-    public function can_store_recordings_keeping_generated_session_id()
+    public function canStoreRecordingsKeepingGeneratedSessionId()
     {
         $this->assertFalse(config('laravel-spyhole.track_request_session_id'));
 
@@ -83,12 +83,12 @@ class StoreTest extends TestCase
                 // some example data
                 [
                     'timestamp' => now()->unix(),
-                    'data' => [
-                        'x' => 0,
-                        'y' => 0,
-                        'type' => 0
-                    ]
-                ]
+                    'data'      => [
+                        'x'    => 0,
+                        'y'    => 0,
+                        'type' => 0,
+                    ],
+                ],
             ],
             'path' => '/',
         ];
@@ -106,7 +106,7 @@ class StoreTest extends TestCase
         ]);
 
         $recordingId = decrypt($response->json('recordingId'));
-        $recording = SessionRecording::find((int) $recordingId);
+        $recording   = SessionRecording::find((int) $recordingId);
         $this->assertNotEquals($this->app['session']->getId(), $recording->session_id);
 
         $requestData['path'] = '/path_changed';
@@ -125,10 +125,10 @@ class StoreTest extends TestCase
         $this->assertDatabaseHas(
             'session_recordings',
             [
-                'id' => (int)$recordingId,
-                'path' => '/',
+                'id'         => (int) $recordingId,
+                'path'       => '/',
                 'recordings' => json_encode($requestData['frames']),
-                'session_id' => $recording->session_id
+                'session_id' => $recording->session_id,
             ]
         );
     }
@@ -137,20 +137,20 @@ class StoreTest extends TestCase
      * This test check if can correctly store frames into the same row of an existing session.
      */
     #[Test]
-    public function can_store_frames_for_a_started_session()
+    public function canStoreFramesForAStartedSession()
     {
-        $recording = new SessionRecording();
+        $recording             = new SessionRecording();
         $recording->recordings = [
             [
                 'timestamp' => now()->unix(),
-                'data' => [
-                    'x' => 0,
-                    'y' => 0,
-                    'type' => 0
-                ]
-            ]
+                'data'      => [
+                    'x'    => 0,
+                    'y'    => 0,
+                    'type' => 0,
+                ],
+            ],
         ];
-        $recording->path = '/';
+        $recording->path       = '/';
         $recording->session_id = Str::uuid();
         $recording->save();
 
@@ -158,14 +158,14 @@ class StoreTest extends TestCase
             'frames' => [
                 [
                     'timestamp' => now()->unix(),
-                    'data' => [
-                        'x' => 0,
-                        'y' => 0,
-                        'type' => 0
-                    ]
-                ]
+                    'data'      => [
+                        'x'    => 0,
+                        'y'    => 0,
+                        'type' => 0,
+                    ],
+                ],
             ],
-            'path' => '/',
+            'path'        => '/',
             'recordingId' => encrypt($recording->id),
         ];
 
@@ -187,8 +187,8 @@ class StoreTest extends TestCase
         $this->assertDatabaseHas(
             'session_recordings',
             [
-                'id' => (int)$recordingId,
-                'path' => '/',
+                'id'         => (int) $recordingId,
+                'path'       => '/',
                 'recordings' => json_encode(array_merge(
                     $recording->recordings,
                     $requestData['frames']
@@ -201,12 +201,12 @@ class StoreTest extends TestCase
      * This test check if can correctly store the user id while the configuration option is enabled.
      */
     #[Test]
-    public function can_store_recording_with_logged_in_user()
+    public function canStoreRecordingWithLoggedInUser()
     {
         config()->set('laravel-spyhole.record_user_id', true);
 
         // Mock a fake user
-        $user = new FakeUser();
+        $user     = new FakeUser();
         $user->id = rand(0, 1000);
 
         Auth::shouldReceive('user')->andReturn($user)->once();
@@ -216,12 +216,12 @@ class StoreTest extends TestCase
                 // some example data
                 [
                     'timestamp' => now()->unix(),
-                    'data' => [
-                        'x' => 0,
-                        'y' => 0,
-                        'type' => 0
-                    ]
-                ]
+                    'data'      => [
+                        'x'    => 0,
+                        'y'    => 0,
+                        'type' => 0,
+                    ],
+                ],
             ],
             'path' => '/',
         ];
@@ -244,8 +244,8 @@ class StoreTest extends TestCase
         $this->assertDatabaseHas(
             'session_recordings',
             [
-                'id' => (int)$recordingId,
-                'path' => '/',
+                'id'         => (int) $recordingId,
+                'path'       => '/',
                 'recordings' => json_encode($requestData['frames']),
             ]
         );
@@ -255,7 +255,7 @@ class StoreTest extends TestCase
      * This test check if can correctly store the user id while the configuration option is enabled.
      */
     #[Test]
-    public function can_store_correct_session_id()
+    public function canStoreCorrectSessionId()
     {
         config()->set('laravel-spyhole.track_request_session_id', true);
 
@@ -264,12 +264,12 @@ class StoreTest extends TestCase
                 // some example data
                 [
                     'timestamp' => now()->unix(),
-                    'data' => [
-                        'x' => 0,
-                        'y' => 0,
-                        'type' => 0
-                    ]
-                ]
+                    'data'      => [
+                        'x'    => 0,
+                        'y'    => 0,
+                        'type' => 0,
+                    ],
+                ],
             ],
             'path' => '/',
         ];
@@ -292,10 +292,10 @@ class StoreTest extends TestCase
         $this->assertDatabaseHas(
             'session_recordings',
             [
-                'id' => (int)$recordingId,
-                'path' => '/',
+                'id'         => (int) $recordingId,
+                'path'       => '/',
                 'recordings' => json_encode($requestData['frames']),
-                'session_id' => $this->app['session']->getId()
+                'session_id' => $this->app['session']->getId(),
             ]
         );
     }
@@ -304,7 +304,7 @@ class StoreTest extends TestCase
 class FakeUser implements Authenticatable
 {
     /**
-     * @var int $id Fake Identifier
+     * @var int Fake Identifier
      */
     public $id;
 
@@ -333,9 +333,7 @@ class FakeUser implements Authenticatable
         return '';
     }
 
-    public function setRememberToken($value)
-    {
-    }
+    public function setRememberToken($value) {}
 
     public function getRememberTokenName(): string
     {

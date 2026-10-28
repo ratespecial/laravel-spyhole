@@ -16,7 +16,7 @@ class EntryController extends Controller
     {
         $recordingId = null;
         if ($request->has('recordingId')) {
-            $recordingId = (int)decrypt($request->input('recordingId'));
+            $recordingId = (int) decrypt($request->input('recordingId'));
 
             if (! SessionRecording::whereId($recordingId)->exists()) {
                 throw new NotAcceptableHttpException();
@@ -24,36 +24,34 @@ class EntryController extends Controller
         }
 
         // get frames directly from raw input, don't pull value from $request
-        $data = json_decode($request->getContent(), true);
+        $data   = json_decode($request->getContent(), true);
         $frames = $data['frames'] ?? [];
 
         if (config('laravel-spyhole.track_request_session_id')) {
             $sessionId = $request->session()->getId();
+        } elseif (session()->has('spyhole_session_id')) {
+            $sessionId = session()->get('spyhole_session_id');
         } else {
-            if (session()->has('spyhole_session_id')) {
-                $sessionId = session()->get('spyhole_session_id');
-            } else {
-                do {
-                    $sessionId = Str::uuid()->toString();
-                } while (
-                    SessionRecording::whereSessionId($sessionId)->exists() &&
-                    $sessionId !== $request->session()->getId()
-                );
-                session()->put('spyhole_session_id', $sessionId);
-            }
+            do {
+                $sessionId = Str::uuid()->toString();
+            } while (
+                SessionRecording::whereSessionId($sessionId)->exists() &&
+                $sessionId !== $request->session()->getId()
+            );
+            session()->put('spyhole_session_id', $sessionId);
         }
 
         $userId = null;
         if (config('laravel-spyhole.record_user_id')) {
-            $user = Auth::user();
+            $user   = Auth::user();
             $userId = $user ? $user->getAuthIdentifier() : null;
         }
 
         if ($recordingId === null) {
-            $recording = new SessionRecording();
+            $recording             = new SessionRecording();
             $recording->session_id = $sessionId;
-            $recording->path = $request->input('path');
-            if (!empty($request->input('type'))) {
+            $recording->path       = $request->input('path');
+            if (! empty($request->input('type'))) {
                 $recording->type = $request->input('type');
             }
             $recording->recordings = $frames;
@@ -74,7 +72,7 @@ class EntryController extends Controller
         $recording->save();
 
         return response()->json([
-            'success' => true,
+            'success'     => true,
             'recordingId' => encrypt($recording->id),
         ]);
     }

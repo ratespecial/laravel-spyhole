@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string type
  * @property string session_id
  * @property array recordings
- * @package Ratespecial\LaravelSpyhole\Models
  */
 class SessionRecording extends Model
 {

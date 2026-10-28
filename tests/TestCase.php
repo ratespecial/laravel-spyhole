@@ -13,7 +13,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
         $this->artisan('migrate');
     }
 
-
     protected function getPackageProviders($app): array
     {
         return [LaravelSpyholeServiceProvider::class];
