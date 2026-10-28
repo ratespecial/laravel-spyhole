@@ -6,14 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 class LaravelSpyholeServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap the application services.
-     */
-    public function boot()
+    public function boot(): void
     {
-        /*
-         * Optional methods to load your package assets
-         */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-spyhole');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravel-spyhole');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
@@ -44,10 +38,7 @@ class LaravelSpyholeServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * Register the application services.
-     */
-    public function register()
+    public function register(): void
     {
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/laravel-spyhole.php', 'laravel-spyhole');

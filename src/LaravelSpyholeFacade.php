@@ -4,9 +4,6 @@ namespace Ratespecial\LaravelSpyhole;
 
 use Illuminate\Support\Facades\Facade;
 
-/**
- * @see \Ratespecial\LaravelSpyhole\Skeleton\SkeletonClass
- */
 class LaravelSpyholeFacade extends Facade
 {
     /**

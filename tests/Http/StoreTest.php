@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
 use Ratespecial\LaravelSpyhole\Models\SessionRecording;
 use Ratespecial\LaravelSpyhole\Tests\TestCase;
 
@@ -20,8 +21,8 @@ class StoreTest extends TestCase
 
     /**
      * This test check if can correctly store a request with recording.
-     * @test
      */
+    #[Test]
     public function can_store_first_recording_request()
     {
         $this->assertFalse(config('laravel-spyhole.track_request_session_id'));
@@ -50,19 +51,18 @@ class StoreTest extends TestCase
         $response->assertSuccessful();
         $response->assertJsonStructure([
             'success',
-            'recording',
+            'recordingId',
         ]);
 
         $this->assertTrue($response->json('success'));
-        $this->assertIsNumeric($recordingId = decrypt($response->json('recording')));
+        $this->assertIsNumeric($recordingId = decrypt($response->json('recordingId')));
 
         $this->assertDatabaseHas(
             'session_recordings',
             [
                 'id' => (int)$recordingId,
                 'path' => '/',
-                'recordings' => base64_encode(gzencode(json_encode($requestData['frames']))),
-                'user_id' => null,
+                'recordings' => json_encode($requestData['frames']),
             ]
         );
 
@@ -72,8 +72,8 @@ class StoreTest extends TestCase
 
     /**
      * This test check if the fake session id is kept between calls.
-     * @test
      */
+    #[Test]
     public function can_store_recordings_keeping_generated_session_id()
     {
         $this->assertFalse(config('laravel-spyhole.track_request_session_id'));
@@ -102,10 +102,10 @@ class StoreTest extends TestCase
         $response->assertSuccessful();
         $response->assertJsonStructure([
             'success',
-            'recording',
+            'recordingId',
         ]);
 
-        $recordingId = decrypt($response->json('recording'));
+        $recordingId = decrypt($response->json('recordingId'));
         $recording = SessionRecording::find((int) $recordingId);
         $this->assertNotEquals($this->app['session']->getId(), $recording->session_id);
 
@@ -119,7 +119,7 @@ class StoreTest extends TestCase
         $secondResponse->assertSuccessful();
         $response->assertJsonStructure([
             'success',
-            'recording',
+            'recordingId',
         ]);
 
         $this->assertDatabaseHas(
@@ -127,8 +127,7 @@ class StoreTest extends TestCase
             [
                 'id' => (int)$recordingId,
                 'path' => '/',
-                'recordings' => base64_encode(gzencode(json_encode($requestData['frames']))),
-                'user_id' => null,
+                'recordings' => json_encode($requestData['frames']),
                 'session_id' => $recording->session_id
             ]
         );
@@ -136,8 +135,8 @@ class StoreTest extends TestCase
 
     /**
      * This test check if can correctly store frames into the same row of an existing session.
-     * @test
      */
+    #[Test]
     public function can_store_frames_for_a_started_session()
     {
         $recording = new SessionRecording();
@@ -167,7 +166,7 @@ class StoreTest extends TestCase
                 ]
             ],
             'path' => '/',
-            'recording' => encrypt($recording->id),
+            'recordingId' => encrypt($recording->id),
         ];
 
         $response = $this->json(
@@ -179,30 +178,29 @@ class StoreTest extends TestCase
         $response->assertSuccessful();
         $response->assertJsonStructure([
             'success',
-            'recording',
+            'recordingId',
         ]);
 
         $this->assertTrue($response->json('success'));
-        $this->assertIsNumeric($recordingId = decrypt($response->json('recording')));
+        $this->assertIsNumeric($recordingId = decrypt($response->json('recordingId')));
 
         $this->assertDatabaseHas(
             'session_recordings',
             [
                 'id' => (int)$recordingId,
                 'path' => '/',
-                'recordings' => base64_encode(gzencode(json_encode(array_merge(
+                'recordings' => json_encode(array_merge(
                     $recording->recordings,
                     $requestData['frames']
-                )))),
-                'user_id' => null,
+                )),
             ]
         );
     }
 
     /**
      * This test check if can correctly store the user id while the configuration option is enabled.
-     * @test
      */
+    #[Test]
     public function can_store_recording_with_logged_in_user()
     {
         config()->set('laravel-spyhole.record_user_id', true);
@@ -237,27 +235,26 @@ class StoreTest extends TestCase
         $response->assertSuccessful();
         $response->assertJsonStructure([
             'success',
-            'recording',
+            'recordingId',
         ]);
 
         $this->assertTrue($response->json('success'));
-        $this->assertIsNumeric($recordingId = decrypt($response->json('recording')));
+        $this->assertIsNumeric($recordingId = decrypt($response->json('recordingId')));
 
         $this->assertDatabaseHas(
             'session_recordings',
             [
                 'id' => (int)$recordingId,
                 'path' => '/',
-                'recordings' => base64_encode(gzencode(json_encode($requestData['frames']))),
-                'user_id' => $user->id,
+                'recordings' => json_encode($requestData['frames']),
             ]
         );
     }
 
     /**
      * This test check if can correctly store the user id while the configuration option is enabled.
-     * @test
      */
+    #[Test]
     public function can_store_correct_session_id()
     {
         config()->set('laravel-spyhole.track_request_session_id', true);
@@ -286,19 +283,18 @@ class StoreTest extends TestCase
         $response->assertSuccessful();
         $response->assertJsonStructure([
             'success',
-            'recording',
+            'recordingId',
         ]);
 
         $this->assertTrue($response->json('success'));
-        $this->assertIsNumeric($recordingId = decrypt($response->json('recording')));
+        $this->assertIsNumeric($recordingId = decrypt($response->json('recordingId')));
 
         $this->assertDatabaseHas(
             'session_recordings',
             [
                 'id' => (int)$recordingId,
                 'path' => '/',
-                'recordings' => base64_encode(gzencode(json_encode($requestData['frames']))),
-                'user_id' => null,
+                'recordings' => json_encode($requestData['frames']),
                 'session_id' => $this->app['session']->getId()
             ]
         );
@@ -323,6 +319,11 @@ class FakeUser implements Authenticatable
     }
 
     public function getAuthPassword(): string
+    {
+        return 'password';
+    }
+
+    public function getAuthPasswordName(): string
     {
         return 'password';
     }
