@@ -42,10 +42,5 @@ class LaravelSpyholeServiceProvider extends ServiceProvider
     {
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/laravel-spyhole.php', 'laravel-spyhole');
-
-        // Register the main class to use with the facade
-        $this->app->singleton('laravel-spyhole', function () {
-            return new LaravelSpyhole();
-        });
     }
 }

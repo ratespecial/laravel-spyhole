@@ -42,10 +42,7 @@
         "laravel": {
             "providers": [
                 "Ratespecial\\LaravelSpyhole\\LaravelSpyholeServiceProvider"
-            ],
-            "aliases": {
-                "LaravelSpyhole": "Ratespecial\\LaravelSpyhole\\LaravelSpyholeFacade"
-            }
+            ]
         }
     },
     "scripts": {
