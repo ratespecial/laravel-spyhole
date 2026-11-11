@@ -59,7 +59,7 @@ To update them:
 
 1. `npm pack @rrweb/record@<version> rrweb-player@<version>` in an empty directory and extract the tarballs.
 2. Copy the files above into `resources/assets`, keeping the `.min.js` names.  npm ships them as `.umd.min.cjs`, which web servers may not serve with a JavaScript MIME type.
-3. Strip the trailing `//# sourceMappingURL=...` (JS) and `/*# sourceMappingURL=... */` (CSS) comments, since the `.map` files are not shipped.
+3. Strip only the **final line** of each JS bundle (`//# sourceMappingURL=...`), e.g. with `sed '$d'`, and the `/*# sourceMappingURL=... */` comment from the CSS, since the `.map` files are not shipped.  Do not strip every `//# sourceMappingURL=` line: each bundle has another one inside the inlined worker's source string, and removing that line breaks the bundle.  Check the copies with `node --check`.
 4. Bump the `?v=` query on both script URLs in `resources/views/embed_spyhole.blade.php`.
 5. Update this table and `CHANGELOG.md`.
 
