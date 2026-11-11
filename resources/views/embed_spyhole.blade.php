@@ -15,5 +15,5 @@
     window.spyholeEvents = [];
 </script>
 <input type="hidden" id="{{ $idValue ?? 'spyhole-id' }}" value="">
-<script type="text/javascript" defer src="{!! asset('/vendor/laravel-spyhole/rrweb.min.js') !!}"></script>
-<script type="text/javascript" defer src="{!! asset('/vendor/laravel-spyhole/recording-handler.js') !!}"></script>
+<script type="text/javascript" defer src="{!! asset('/vendor/laravel-spyhole/rrweb-record.min.js') !!}?v=3.0.0"></script>
+<script type="text/javascript" defer src="{!! asset('/vendor/laravel-spyhole/recording-handler.js') !!}?v=3.0.0"></script>

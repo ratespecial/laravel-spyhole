@@ -45,6 +45,26 @@ As pointed before, spyhole uses RRWeb as its internal recorder.
 
 In the `resources/assets` folder there are the published assets where you can find the RRWeb files and the built version of `recording-handler.js`, a JS script handling the RRWeb initialization and recording sendings.  
 
+#### Bundled rrweb assets
+
+The rrweb files are committed, minified copies of the npm packages' UMD bundles.  There is no build step.
+
+| File | Source | Version |
+| --- | --- | --- |
+| `rrweb-record.min.js` | `@rrweb/record` `dist/record.umd.min.cjs` (UMD global `rrwebRecord`) | 2.2.1 |
+| `rrweb-player.min.js` | `rrweb-player` `dist/rrweb-player.umd.min.cjs` (UMD global `rrwebPlayer`) | 2.2.1 |
+| `rrweb-player.min.css` | `rrweb-player` `dist/style.min.css` | 2.2.1 |
+
+To update them:
+
+1. `npm pack @rrweb/record@<version> rrweb-player@<version>` in an empty directory and extract the tarballs.
+2. Copy the files above into `resources/assets`, keeping the `.min.js` names.  npm ships them as `.umd.min.cjs`, which web servers may not serve with a JavaScript MIME type.
+3. Strip the trailing `//# sourceMappingURL=...` (JS) and `/*# sourceMappingURL=... */` (CSS) comments, since the `.map` files are not shipped.
+4. Bump the `?v=` query on both script URLs in `resources/views/embed_spyhole.blade.php`.
+5. Update this table and `CHANGELOG.md`.
+
+Only the recorder (`@rrweb/record`) is loaded on recorded pages.  The player is for replay pages only.  Recordings made with rrweb 1.x replay in the 2.x player.
+
 The recordings are posted to a route named `spyhole.store-entry` (whose URL is `/spyhole-api/record`). Recordings are accessible via the model `Ratespecial\LaravelSpyhole\Models\SessionRecording` with properties: ID, path, recordings (an array stored gzipped and base 64 encoded) and user ID.
 
 ### Testing
