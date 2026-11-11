@@ -2,7 +2,16 @@
 
 All notable changes to `laravel-spyhole` will be documented in this file
 
+## 3.0.1 - 2026-11-11
+
+- **Fix:** `rrweb-record.min.js` and `rrweb-player.min.js` in 3.0.0 were broken and did not parse.  Stripping the source map comments removed a line in each bundle that held the end of the inlined image-bitmap worker's source and the code after it.  Both are now the npm 2.2.1 bundles with only their final source map line removed.
+- Embed script URLs now carry `?v=3.0.1`.
+- `EmbedSpyholeTest` checks both bundles are intact.
+
 ## 3.0.0 - 2026-11-11
+
+> Do not use: the JS bundles in this release are broken.  Use 3.0.1.
+
 
 Upgrades rrweb from 1.1.3 to 2.2.1.
 
