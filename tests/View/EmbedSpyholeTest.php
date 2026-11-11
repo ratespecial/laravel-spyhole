@@ -17,7 +17,7 @@ class EmbedSpyholeTest extends TestCase
     {
         $html = view('laravel-spyhole::embed_spyhole')->render();
 
-        preg_match_all('#src="[^"]*' . preg_quote(self::ASSET_PREFIX, '#') . '([^"]+)"#', $html, $matches);
+        preg_match_all('#src="[^"]*' . preg_quote(self::ASSET_PREFIX, '#') . '([^"?]+)(\?v=[^"]+)?"#', $html, $matches);
 
         $this->assertSame(['rrweb-record.min.js', 'recording-handler.js'], $matches[1]);
 
@@ -29,6 +29,18 @@ class EmbedSpyholeTest extends TestCase
     /**
      * The recorder is @rrweb/record's UMD bundle, whose global is `rrwebRecord`.  rrweb v1's `rrweb` global no longer exists.
      */
+    /**
+     * The handler keeps its URL across releases, so a version query stops a browser pairing a cached old handler with a
+     * new recorder bundle.
+     */
+    #[Test]
+    public function embedScriptsAreVersioned(): void
+    {
+        $html = view('laravel-spyhole::embed_spyhole')->render();
+
+        $this->assertSame(2, preg_match_all('#' . preg_quote(self::ASSET_PREFIX, '#') . '[^"]+\?v=3\.0\.0"#', $html));
+    }
+
     #[Test]
     public function handlerUsesTheRecordBundleGlobal(): void
     {

@@ -60,7 +60,8 @@ To update them:
 1. `npm pack @rrweb/record@<version> rrweb-player@<version>` in an empty directory and extract the tarballs.
 2. Copy the files above into `resources/assets`, keeping the `.min.js` names.  npm ships them as `.umd.min.cjs`, which web servers may not serve with a JavaScript MIME type.
 3. Strip the trailing `//# sourceMappingURL=...` (JS) and `/*# sourceMappingURL=... */` (CSS) comments, since the `.map` files are not shipped.
-4. Update this table and `CHANGELOG.md`.
+4. Bump the `?v=` query on both script URLs in `resources/views/embed_spyhole.blade.php`.
+5. Update this table and `CHANGELOG.md`.
 
 Only the recorder (`@rrweb/record`) is loaded on recorded pages.  The player is for replay pages only.  Recordings made with rrweb 1.x replay in the 2.x player.
 
