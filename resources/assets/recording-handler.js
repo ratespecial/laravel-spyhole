@@ -63,7 +63,7 @@ const initializeRecordings = () => {
     )
         throw new Error('Missing spyhole configuration');
 
-    rrweb.record({
+    rrwebRecord.record({
         maskTextSelector: '[data-spyhole-mask]',
         emit(event) {
             if (!window.hasOwnProperty('spyholeEvents')) {
